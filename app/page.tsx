@@ -417,11 +417,6 @@ export default function Home() {
                   <span className="source-message">
                     {selected.availability === 'not-found' ? 'No public recording located' : selected.availability === 'full-audio' ? 'Listen to the complete address' : 'Watch at the original source'}
                   </span>
-                  {selected.sourceUrl && (
-                    <a className="media-action" href={selected.sourceUrl} target="_blank" rel="noreferrer">
-                      Open source <ArrowUpRight aria-hidden="true" />
-                    </a>
-                  )}
                 </div>
               )}
 
@@ -435,6 +430,17 @@ export default function Home() {
                 <span>{selected.timestampLabel ?? (selected.availability === 'not-found' ? '—' : 'Source')}</span>
                 <p>{selected.relationship}</p>
               </div>
+              {selected.sourceUrl && (
+                <a
+                  className="text-link recording-source-link"
+                  href={selected.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${selected.sourceName} in a new tab`}
+                >
+                  Open source <ArrowUpRight aria-hidden="true" />
+                </a>
+              )}
             </section>
           </div>
         </article>

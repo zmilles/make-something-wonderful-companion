@@ -322,8 +322,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .source-icon { position: relative; z-index: 1; align-self: center; margin-top: 22px; }
 .source-icon svg { width: 50px; height: 50px; stroke-width: 0.9; color: #8f8d85; }
 .source-message { position: relative; z-index: 1; align-self: center; color: #d8d6cf; font-family: var(--font-editorial); font-size: 16px; }
-.media-action { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 5px; align-self: center; padding-bottom: 4px; border-bottom: 1px solid #66645e; color: #d8d6cf; font-size: 11px; }
-.media-action svg { width: 11px; height: 11px; }
 .source-not-found { cursor: default; }
 .timeline { position: relative; height: 1px; margin-top: 18px; background: #44443f; }
 .timeline-fill { position: absolute; inset: 0 auto 0 0; width: 44%; background: #f7f6f1; }
@@ -331,6 +329,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .recording-caption { display: grid; grid-template-columns: 42px 1fr; gap: 8px; align-items: baseline; margin-top: 15px; }
 .recording-caption span { color: #929088; font-family: var(--font-geist-mono); font-size: 10px; }
 .recording-caption p { margin: 0; font-family: var(--font-editorial); font-size: 15px; }
+.recording-source-link { margin-top: 15px; }
 
 @media (min-width: 681px) and (min-height: 640px) {
   .site-frame { height: 100dvh; overflow: hidden; }
