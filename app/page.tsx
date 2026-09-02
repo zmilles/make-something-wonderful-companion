@@ -275,9 +275,6 @@ export default function Home() {
 
       <div className="archive-layout">
         <nav className="timeline-nav" aria-label="Book timeline" aria-keyshortcuts="ArrowUp ArrowDown Home End">
-          <div className="timeline-heading">
-            <p>Book timeline</p>
-          </div>
           <ol className="timeline-list">
             {timelineEntries.map((entry, index) => {
               const active = entry.id === selected.id;

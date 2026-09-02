@@ -204,8 +204,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   flex-direction: column;
   overflow: hidden;
 }
-.timeline-heading { margin-bottom: 18px; }
-.timeline-heading p { margin: 0; font-size: 10px; font-weight: 650; letter-spacing: 0.11em; text-transform: uppercase; }
 .timeline-list { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; margin: 0; padding: 0; list-style: none; }
 .timeline-list::before { content: ''; position: absolute; left: 40px; top: 11px; bottom: 11px; width: 1px; background: var(--border); }
 .timeline-event {
