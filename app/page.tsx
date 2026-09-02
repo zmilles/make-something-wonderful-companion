@@ -269,11 +269,7 @@ export default function Home() {
     <main className="site-frame">
       <header className="masthead">
         <button className="wordmark" onClick={() => stepTo(timelineEntries[0])} aria-label="Make Something Wonderful home">
-          <span className="wordmark-mark">MW</span>
-          <span className="wordmark-copy">
-            <strong>Make Something Wonderful</strong>
-            <small>A recorded companion</small>
-          </span>
+          <span className="wordmark-title">Make Something Wonderful</span>
         </button>
       </header>
 
