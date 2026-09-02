@@ -1,10 +1,10 @@
-# Make Something Wonderful — Book-to-Recording Companion
+# Make Something Wonderful Companion
 
 > Read the words. Hear the moment.
 
 [View the live site](https://make-something-wonderful.zmil4.chatgpt.site/)
 
-I made this as an independent reading companion to the Steve Jobs Archive book [*Make Something Wonderful*](https://book.stevejobsarchive.com/).
+I made this as an independent reading companion to the [Steve Jobs Archive](https://stevejobsarchive.com/) book [*Make Something Wonderful*](https://book.stevejobsarchive.com/).
 
 The book turns speeches, interviews, and conversations into a reading experience. This site puts some of the original context back around those words: the voice, pacing, audience, and room. It pairs 17 speech-derived passages with the closest public recording or source I could verify.
 

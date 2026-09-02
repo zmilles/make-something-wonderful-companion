@@ -292,26 +292,46 @@ export default function Home() {
   return (
     <main className="site-frame">
       <header className="masthead">
-        <button className="wordmark" onClick={() => stepTo(timelineEntries[0])} aria-label="Make Something Wonderful home">
-          <span className="wordmark-title">Make Something Wonderful</span>
+        <button className="wordmark" onClick={() => stepTo(timelineEntries[0])} aria-label="Make Something Wonderful Companion home">
+          <span className="wordmark-title">Make Something Wonderful Companion</span>
         </button>
         <div className="info-menu" ref={infoRef}>
           <button
             type="button"
             className="info-trigger"
-            aria-label="About this website"
+            aria-label="About Make Something Wonderful Companion"
             aria-expanded={infoOpen}
             aria-controls="site-information"
-            title="About this website"
+            title="About Make Something Wonderful Companion"
             onClick={() => setInfoOpen((open) => !open)}
           >
             <Info aria-hidden="true" />
           </button>
           {infoOpen && (
-            <div className="info-popover" id="site-information" role="dialog" aria-label="About this website">
-              <p>Compare 17 passages from <cite>Make Something Wonderful</cite> with the speeches and interviews they came from.</p>
-              <p>Use the numbered timeline or the arrow keys to move through the book. Public recordings are linked where available.</p>
-            </div>
+            <section className="info-popover" id="site-information" aria-labelledby="site-information-title">
+              <h2 id="site-information-title">About this companion</h2>
+              <p>This is an independent companion to <cite>Make Something Wonderful</cite>, the book published by the Steve Jobs Archive.</p>
+              <p>It pairs 17 passages from the book with the speeches and interviews they came from.</p>
+              <nav className="info-links" aria-label="Official book and archive links">
+                <a
+                  href="https://stevejobsarchive.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit the Steve Jobs Archive in a new tab"
+                >
+                  Steve Jobs Archive <ArrowUpRight aria-hidden="true" />
+                </a>
+                <a
+                  href="https://book.stevejobsarchive.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Read Make Something Wonderful in a new tab"
+                >
+                  Read the book <ArrowUpRight aria-hidden="true" />
+                </a>
+              </nav>
+              <p className="info-instruction">Use the numbered timeline or the arrow keys to move through the book.</p>
+            </section>
           )}
         </div>
       </header>

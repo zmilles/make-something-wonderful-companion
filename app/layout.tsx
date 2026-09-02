@@ -13,18 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Make Something Wonderful — A Recorded Companion',
-  description: 'Read the words. Hear the moment. A section-by-section companion to Make Something Wonderful.',
+  title: 'Make Something Wonderful Companion',
+  description: 'An independent companion to the book Make Something Wonderful, pairing 17 passages with public recordings and sources.',
   openGraph: {
-    title: 'Make Something Wonderful',
-    description: 'A recorded companion. Read the words, then hear the moment.',
+    title: 'Make Something Wonderful Companion',
+    description: 'Read the words, then hear the moment.',
     type: 'website',
-    images: [{ url: '/og.png', width: 1730, height: 909, alt: 'Make Something Wonderful — A recorded companion' }],
+    images: [{ url: '/og.png', width: 1730, height: 909, alt: 'Make Something Wonderful Companion' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Make Something Wonderful',
-    description: 'A recorded companion. Read the words, then hear the moment.',
+    title: 'Make Something Wonderful Companion',
+    description: 'Read the words, then hear the moment.',
     images: ['/og.png'],
   },
   icons: {

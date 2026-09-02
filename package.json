@@ -1,11 +1,11 @@
 {
-  "name": "make-something-wonderful",
+  "name": "make-something-wonderful-companion",
   "version": "0.1.0",
   "private": true,
-  "description": "A book-to-recording companion for Steve Jobs Archive's Make Something Wonderful.",
+  "description": "An independent book-to-recording companion for Make Something Wonderful, published by the Steve Jobs Archive.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zmilles/make-something-wonderful.git"
+    "url": "https://github.com/zmilles/make-something-wonderful-companion.git"
   },
   "homepage": "https://make-something-wonderful.zmil4.chatgpt.site/",
   "engines": {
