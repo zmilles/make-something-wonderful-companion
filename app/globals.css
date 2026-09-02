@@ -110,29 +110,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .wordmark-copy { display: grid; gap: 2px; }
 .wordmark-copy strong { font-size: 13px; line-height: 1; letter-spacing: -0.02em; }
 .wordmark-copy small { color: var(--muted-foreground); font-size: 10px; letter-spacing: 0.02em; }
-.masthead-nav { display: flex; align-items: center; gap: 24px; font-size: 12px; }
-.method-menu { position: relative; }
-.method-menu summary { color: var(--ink-soft); cursor: pointer; list-style: none; transition: color 150ms ease; }
-.method-menu summary::-webkit-details-marker { display: none; }
-.method-menu summary:hover, .method-menu[open] summary { color: var(--foreground); }
-.method-popover {
-  position: absolute;
-  top: calc(100% + 18px);
-  right: -1px;
-  z-index: 30;
-  width: min(360px, calc(100vw - 36px));
-  padding: 20px;
-  border: 1px solid var(--foreground);
-  background: var(--paper);
-  box-shadow: 0 18px 50px rgba(24, 24, 22, 0.12);
-  color: var(--muted-foreground);
-  font-size: 11px;
-  line-height: 1.55;
-}
-.method-popover p { margin: 0; }
-.method-popover p + p { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
-.method-popover strong { color: var(--foreground); font-weight: 600; }
-.source-count { color: var(--muted-foreground); font-family: var(--font-geist-mono); font-size: 9px; }
 
 .archive-layout {
   display: grid;
@@ -371,8 +348,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 680px) {
   .masthead { height: 64px; padding: 0 18px; }
   .wordmark-copy strong { font-size: 12px; }
-  .method-menu { display: none; }
-  .source-count { border: 0; padding: 0; color: var(--muted-foreground); }
   .archive-layout { display: block; height: auto; min-height: 0; overflow: visible; padding: 0; }
   .timeline-nav { display: none; }
   .comparison { display: block; height: auto; max-width: none; overflow: visible; padding: 34px 18px 32px; }

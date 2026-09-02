@@ -275,16 +275,6 @@ export default function Home() {
             <small>A recorded companion</small>
           </span>
         </button>
-        <nav className="masthead-nav" aria-label="Primary navigation">
-          <details className="method-menu">
-            <summary>Method</summary>
-            <div className="method-popover">
-              <p><strong>A section-by-section book timeline.</strong> Dates identify the original moment; the sequence follows the reading experience.</p>
-              <p>Minimal quotations link back to the official book and original recordings. Sources last checked August 31, 2026.</p>
-            </div>
-          </details>
-          <span className="source-count">{timelineEntries.length} passages</span>
-        </nav>
       </header>
 
       <div className="archive-layout">
