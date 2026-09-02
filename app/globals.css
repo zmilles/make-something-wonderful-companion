@@ -98,6 +98,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   cursor: pointer;
 }
 .wordmark-title { display: block; }
+.info-menu { position: relative; }
 .info-trigger {
   width: 36px;
   height: 36px;
@@ -114,10 +115,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .info-trigger:focus-visible { outline: 1px solid var(--foreground); outline-offset: 2px; }
 .info-trigger svg { width: 20px; height: 20px; stroke-width: 1.45; }
 .info-popover {
+  position: absolute;
+  top: calc(100% + 18px);
+  right: 0;
+  z-index: 30;
   width: min(360px, calc(100vw - 36px));
   padding: 18px 20px;
-  gap: 0;
-  border-radius: 0;
   border: 1px solid var(--foreground);
   background: var(--paper);
   box-shadow: 0 18px 50px rgba(24, 24, 22, 0.12);

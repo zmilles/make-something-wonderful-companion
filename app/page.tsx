@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ArrowDown,
   ArrowUp,
@@ -12,7 +12,6 @@ import {
   Info,
   Video,
 } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 type Availability = 'full-video' | 'partial-video' | 'full-audio' | 'not-found';
 
@@ -194,6 +193,8 @@ function AvailabilityIcon({ availability }: { availability: Availability }) {
 export default function Home() {
   const [selectedId, setSelectedId] = useState('stanford-2005');
   const [playing, setPlaying] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const infoRef = useRef<HTMLDivElement>(null);
 
   const selected = entries.find((entry) => entry.id === selectedId) ?? timelineEntries[0];
   const selectedIndex = timelineEntries.findIndex((entry) => entry.id === selected.id);
@@ -209,6 +210,27 @@ export default function Home() {
   }, []);
 
   useEffect(() => setPlaying(false), [selectedId]);
+
+  useEffect(() => {
+    if (!infoOpen) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      if (!infoRef.current?.contains(event.target as Node)) setInfoOpen(false);
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key !== 'Escape') return;
+      setInfoOpen(false);
+      requestAnimationFrame(() => infoRef.current?.querySelector<HTMLButtonElement>('button')?.focus());
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [infoOpen]);
 
   const progress = selected.timestamp && selected.duration === '15:05' ? `${(selected.timestamp / 905) * 100}%` : '18%';
 
@@ -273,15 +295,25 @@ export default function Home() {
         <button className="wordmark" onClick={() => stepTo(timelineEntries[0])} aria-label="Make Something Wonderful home">
           <span className="wordmark-title">Make Something Wonderful</span>
         </button>
-        <Popover>
-          <PopoverTrigger className="info-trigger" aria-label="About this website" title="About this website">
+        <div className="info-menu" ref={infoRef}>
+          <button
+            type="button"
+            className="info-trigger"
+            aria-label="About this website"
+            aria-expanded={infoOpen}
+            aria-controls="site-information"
+            title="About this website"
+            onClick={() => setInfoOpen((open) => !open)}
+          >
             <Info aria-hidden="true" />
-          </PopoverTrigger>
-          <PopoverContent className="info-popover" align="end" sideOffset={18}>
-            <p>Compare 17 passages from <cite>Make Something Wonderful</cite> with the speeches and interviews they came from.</p>
-            <p>Use the numbered timeline or the arrow keys to move through the book. Public recordings are linked where available.</p>
-          </PopoverContent>
-        </Popover>
+          </button>
+          {infoOpen && (
+            <div className="info-popover" id="site-information" role="dialog" aria-label="About this website">
+              <p>Compare 17 passages from <cite>Make Something Wonderful</cite> with the speeches and interviews they came from.</p>
+              <p>Use the numbered timeline or the arrow keys to move through the book. Public recordings are linked where available.</p>
+            </div>
+          )}
+        </div>
       </header>
 
       <div className="archive-layout">
