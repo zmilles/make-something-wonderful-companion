@@ -232,6 +232,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .timeline-event:hover .timeline-node, .timeline-event:focus-visible .timeline-node { border-color: var(--foreground); }
 .timeline-event.is-active { color: var(--foreground); }
 .timeline-event.is-active .timeline-node { width: 11px; height: 11px; border-color: var(--foreground); background: var(--foreground); box-shadow: 0 0 0 4px var(--background); }
+.timeline-event:focus-visible { outline: none; }
+.timeline-event:focus-visible .timeline-node { box-shadow: 0 0 0 3px var(--background), 0 0 0 4px var(--foreground); }
 .mobile-timeline { display: none; }
 
 .comparison { width: 100%; max-width: 1080px; margin: 0; padding: 62px 0 44px; }
