@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  ArrowLeft,
-  ArrowRight,
+  ArrowDown,
+  ArrowUp,
   ArrowUpRight,
   BookOpen,
   CirclePlay,
   FileText,
   Headphones,
-  Search,
   Video,
 } from 'lucide-react';
 
@@ -183,13 +182,7 @@ const availabilityLabel: Record<Availability, string> = {
   'not-found': 'Text only',
 };
 
-const filters: Array<{ id: 'all' | Availability; label: string }> = [
-  { id: 'all', label: 'All' },
-  { id: 'full-video', label: 'Video' },
-  { id: 'partial-video', label: 'Excerpts' },
-  { id: 'full-audio', label: 'Audio' },
-  { id: 'not-found', label: 'Text only' },
-];
+const timelineEntries = entries;
 
 function AvailabilityIcon({ availability }: { availability: Availability }) {
   if (availability === 'full-audio') return <Headphones aria-hidden="true" />;
@@ -199,10 +192,15 @@ function AvailabilityIcon({ availability }: { availability: Availability }) {
 
 export default function Home() {
   const [selectedId, setSelectedId] = useState('stanford-2005');
-  const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState<'all' | Availability>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('compare');
   const [playing, setPlaying] = useState(false);
+
+  const selected = entries.find((entry) => entry.id === selectedId) ?? timelineEntries[0];
+  const selectedIndex = timelineEntries.findIndex((entry) => entry.id === selected.id);
+  const previous = timelineEntries[Math.max(0, selectedIndex - 1)];
+  const next = timelineEntries[Math.min(timelineEntries.length - 1, selectedIndex + 1)];
+  const hasPrevious = selectedIndex > 0;
+  const hasNext = selectedIndex < timelineEntries.length - 1;
 
   useEffect(() => {
     const requested = window.location.hash.replace('#', '');
@@ -211,25 +209,57 @@ export default function Home() {
 
   useEffect(() => setPlaying(false), [selectedId]);
 
-  const filteredEntries = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return entries.filter((entry) => {
-      const matchesFilter = filter === 'all' || entry.availability === filter;
-      const haystack = `${entry.title} ${entry.bookSection} ${entry.event} ${entry.year} ${entry.quote}`.toLowerCase();
-      return matchesFilter && (!query || haystack.includes(query));
-    });
-  }, [filter, search]);
-
-  const selected = entries.find((entry) => entry.id === selectedId) ?? entries[0];
-  const selectedIndex = entries.findIndex((entry) => entry.id === selected.id);
-  const previous = entries[(selectedIndex - 1 + entries.length) % entries.length];
-  const next = entries[(selectedIndex + 1) % entries.length];
   const progress = selected.timestamp && selected.duration === '15:05' ? `${(selected.timestamp / 905) * 100}%` : '18%';
 
-  function selectEntry(entry: Entry) {
+  useEffect(() => {
+    function handleTimelineKeys(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      const timelineButton = target?.closest<HTMLButtonElement>('[data-timeline-event]');
+      const interactiveTarget = target?.closest('a, button, input, textarea, select, iframe, video');
+      if (
+        event.defaultPrevented ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey ||
+        target?.isContentEditable ||
+        (interactiveTarget && !timelineButton)
+      ) return;
+
+      if (event.key === 'ArrowDown' && hasNext) {
+        event.preventDefault();
+        selectEntry(next, Boolean(timelineButton));
+      }
+      if (event.key === 'ArrowUp' && hasPrevious) {
+        event.preventDefault();
+        selectEntry(previous, Boolean(timelineButton));
+      }
+      if (event.key === 'Home') {
+        event.preventDefault();
+        selectEntry(timelineEntries[0], Boolean(timelineButton));
+      }
+      if (event.key === 'End') {
+        event.preventDefault();
+        selectEntry(timelineEntries[timelineEntries.length - 1], Boolean(timelineButton));
+      }
+    }
+
+    window.addEventListener('keydown', handleTimelineKeys);
+    return () => window.removeEventListener('keydown', handleTimelineKeys);
+  }, [hasNext, hasPrevious, next, previous]);
+
+  function selectEntry(entry: Entry, focusTimeline = false) {
     setSelectedId(entry.id);
     window.history.replaceState(null, '', `#${entry.id}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const heading = document.querySelector<HTMLElement>('.comparison-heading');
+    const headingRect = heading?.getBoundingClientRect();
+    if (heading && headingRect && (headingRect.top < 72 || headingRect.top > window.innerHeight - 100)) {
+      heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (focusTimeline) {
+      requestAnimationFrame(() => {
+        document.querySelector<HTMLButtonElement>(`[data-timeline-id="${entry.id}"]`)?.focus();
+      });
+    }
   }
 
   function stepTo(entry: Entry) {
@@ -239,7 +269,7 @@ export default function Home() {
   return (
     <main className={`site-frame mode-${viewMode}`}>
       <header className="masthead">
-        <button className="wordmark" onClick={() => stepTo(entries[0])} aria-label="Make Something Wonderful home">
+        <button className="wordmark" onClick={() => stepTo(timelineEntries[0])} aria-label="Make Something Wonderful home">
           <span className="wordmark-mark">MW</span>
           <span className="wordmark-copy">
             <strong>Make Something Wonderful</strong>
@@ -248,52 +278,37 @@ export default function Home() {
         </button>
         <nav className="masthead-nav" aria-label="Primary navigation">
           <a href="#method">Method</a>
-          <span className="source-count">{entries.length} passages</span>
+          <span className="source-count">{timelineEntries.length} passages</span>
         </nav>
       </header>
 
       <div className="archive-layout">
-        <aside className="section-index" aria-label="Book sections">
-          <div className="index-heading">
-            <p>Reading order</p>
-            <span>{filteredEntries.length}</span>
+        <nav className="timeline-nav" aria-label="Book timeline" aria-describedby="timeline-help" aria-keyshortcuts="ArrowUp ArrowDown Home End">
+          <div className="timeline-heading">
+            <p>Book timeline</p>
+            <span>Opening → Part III</span>
           </div>
-          <label className="search-field">
-            <Search aria-hidden="true" />
-            <span className="sr-only">Search speeches and interviews</span>
-            <input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search the book"
-              className="archive-search-input"
-            />
-          </label>
-          <div className="filter-row" aria-label="Filter by recording availability">
-            {filters.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={filter === item.id ? 'filter-button is-active' : 'filter-button'}
-                onClick={() => setFilter(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-          <ol className="section-list">
-            {filteredEntries.map((entry, index) => {
-              const priorPart = filteredEntries[index - 1]?.part;
+          <p className="timeline-help" id="timeline-help">
+            <kbd>↑</kbd><kbd>↓</kbd> to move
+          </p>
+          <ol className="timeline-list">
+            {timelineEntries.map((entry, index) => {
+              const active = entry.id === selected.id;
+              const beginsPart = index === 0 || timelineEntries[index - 1].part !== entry.part;
               return (
                 <li key={entry.id}>
-                  {entry.part !== priorPart && <p className="section-part">{entry.part}</p>}
                   <button
                     type="button"
-                    className={entry.id === selected.id ? 'section-link is-active' : 'section-link'}
+                    className={active ? 'timeline-event is-active' : 'timeline-event'}
                     onClick={() => selectEntry(entry)}
-                    aria-current={entry.id === selected.id ? 'page' : undefined}
+                    aria-current={active ? 'step' : undefined}
+                    aria-label={`Passage ${index + 1} of ${timelineEntries.length}, ${entry.part}, ${entry.title}, ${entry.year}, ${availabilityLabel[entry.availability]}`}
+                    data-timeline-event
+                    data-timeline-id={entry.id}
                   >
-                    <span className={`status-dot status-${entry.availability}`} aria-label={availabilityLabel[entry.availability]} />
-                    <span className="section-copy">
+                    <span className="timeline-part">{beginsPart ? entry.part : ''}</span>
+                    <span className="timeline-node" />
+                    <span className="timeline-copy">
                       <strong>{entry.title}</strong>
                       <small>{entry.year} · {availabilityLabel[entry.availability]}</small>
                     </span>
@@ -302,26 +317,22 @@ export default function Home() {
               );
             })}
           </ol>
-          {filteredEntries.length === 0 && (
-            <div className="empty-index">
-              <p>No passages match.</p>
-              <button onClick={() => { setSearch(''); setFilter('all'); }}>Clear search</button>
-            </div>
-          )}
-          <div className="index-key" aria-label="Recording availability key">
-            <span><i className="status-dot status-full-video" />Full</span>
-            <span><i className="status-dot status-partial-video" />Excerpt</span>
-            <span><i className="status-dot status-full-audio" />Audio</span>
-          </div>
-        </aside>
+        </nav>
 
         <article className="comparison" id={selected.id}>
-          <div className="mobile-passages" aria-label="Passage navigation">
-            <span>{selectedIndex + 1} / {entries.length}</span>
-            <select value={selected.id} onChange={(event) => selectEntry(entries.find((entry) => entry.id === event.target.value) ?? selected)} aria-label="Choose a passage">
-              {entries.map((entry) => <option value={entry.id} key={entry.id}>{entry.title}</option>)}
-            </select>
+          <div className="mobile-timeline" aria-label="Timeline navigation">
+            <button type="button" onClick={() => stepTo(previous)} aria-label={`Previous: ${previous.title}`} disabled={!hasPrevious}>
+              <ArrowUp aria-hidden="true" />
+            </button>
+            <span>
+              <small>{selected.year} · {selectedIndex + 1} / {timelineEntries.length}</small>
+              <strong>{selected.title}</strong>
+            </span>
+            <button type="button" onClick={() => stepTo(next)} aria-label={`Next: ${next.title}`} disabled={!hasNext}>
+              <ArrowDown aria-hidden="true" />
+            </button>
           </div>
+          <p className="sr-only" aria-live="polite">Passage {selectedIndex + 1} of {timelineEntries.length}: {selected.title}, {selected.year}.</p>
 
           <div className="comparison-heading">
             <div>
@@ -430,19 +441,19 @@ export default function Home() {
           </section>
 
           <nav className="sequence-nav" aria-label="Previous and next passages">
-            <button type="button" onClick={() => stepTo(previous)} className="sequence-button sequence-previous">
-              <ArrowLeft aria-hidden="true" />
-              <span><small>Previous</small>{previous.title}</span>
+            <button type="button" onClick={() => stepTo(previous)} className="sequence-button sequence-previous" disabled={!hasPrevious}>
+              <ArrowUp aria-hidden="true" />
+              <span><small>Earlier</small>{previous.title}</span>
             </button>
-            <span className="sequence-count">{selectedIndex + 1} / {entries.length}</span>
-            <button type="button" onClick={() => stepTo(next)} className="sequence-button sequence-next">
-              <span><small>Next</small>{next.title}</span>
-              <ArrowRight aria-hidden="true" />
+            <span className="sequence-count">{selectedIndex + 1} / {timelineEntries.length}</span>
+            <button type="button" onClick={() => stepTo(next)} className="sequence-button sequence-next" disabled={!hasNext}>
+              <span><small>Later</small>{next.title}</span>
+              <ArrowDown aria-hidden="true" />
             </button>
           </nav>
 
           <footer className="page-note" id="method">
-            <p><strong>A section-by-section companion.</strong> This is a systematic audit of speech-derived passages, not a republication of the book.</p>
+            <p><strong>A section-by-section book timeline.</strong> Dates identify the original moment; the sequence follows the reading experience.</p>
             <p>Minimal quotations link back to the official book and original recordings. Sources last checked August 31, 2026.</p>
           </footer>
         </article>
