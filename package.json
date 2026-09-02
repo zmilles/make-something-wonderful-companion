@@ -1,7 +1,13 @@
 {
-  "name": "sites-project",
+  "name": "make-something-wonderful",
   "version": "0.1.0",
   "private": true,
+  "description": "A book-to-recording companion for Steve Jobs Archive's Make Something Wonderful.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zmilles/make-something-wonderful.git"
+  },
+  "homepage": "https://make-something-wonderful.zmil4.chatgpt.site/",
   "engines": {
     "node": ">=22.13.0"
   },
