@@ -215,7 +215,7 @@ export default function Home() {
     function handleTimelineKeys(event: KeyboardEvent) {
       const target = event.target as HTMLElement | null;
       const timelineButton = target?.closest<HTMLButtonElement>('[data-timeline-event]');
-      const interactiveTarget = target?.closest('a, button, input, textarea, select, iframe, video');
+      const interactiveTarget = target?.closest('a, button, summary, input, textarea, select, iframe, video');
       if (
         event.defaultPrevented ||
         event.metaKey ||
@@ -277,7 +277,13 @@ export default function Home() {
           </span>
         </button>
         <nav className="masthead-nav" aria-label="Primary navigation">
-          <a href="#method">Method</a>
+          <details className="method-menu">
+            <summary>Method</summary>
+            <div className="method-popover">
+              <p><strong>A section-by-section book timeline.</strong> Dates identify the original moment; the sequence follows the reading experience.</p>
+              <p>Minimal quotations link back to the official book and original recordings. Sources last checked August 31, 2026.</p>
+            </div>
+          </details>
           <span className="source-count">{timelineEntries.length} passages</span>
         </nav>
       </header>
@@ -420,42 +426,6 @@ export default function Home() {
               </div>
             </section>
           </div>
-
-          <section className="alignment" aria-labelledby="alignment-title">
-            <div className="alignment-title">
-              <p className="eyebrow" id="alignment-title">How the sources relate</p>
-              <span>{selected.relationship}</span>
-            </div>
-            <div className="alignment-row">
-              <span>Book</span>
-              <p>{selected.quote}</p>
-            </div>
-            <div className="alignment-row is-recording">
-              <span>{selected.timestampLabel ?? 'Source'}</span>
-              <p>{selected.availability === 'not-found' ? 'No public recording was found for comparison.' : selected.quote}</p>
-              {selected.availability !== 'not-found' && <CirclePlay aria-hidden="true" />}
-            </div>
-            {selected.relationship.toLowerCase().includes('edited') && (
-              <p className="cut-note"><span>✂</span> The book marks editorial cuts; the full recording continues where the text jumps.</p>
-            )}
-          </section>
-
-          <nav className="sequence-nav" aria-label="Previous and next passages">
-            <button type="button" onClick={() => stepTo(previous)} className="sequence-button sequence-previous" disabled={!hasPrevious}>
-              <ArrowUp aria-hidden="true" />
-              <span><small>Earlier</small>{previous.title}</span>
-            </button>
-            <span className="sequence-count">{selectedIndex + 1} / {timelineEntries.length}</span>
-            <button type="button" onClick={() => stepTo(next)} className="sequence-button sequence-next" disabled={!hasNext}>
-              <span><small>Later</small>{next.title}</span>
-              <ArrowDown aria-hidden="true" />
-            </button>
-          </nav>
-
-          <footer className="page-note" id="method">
-            <p><strong>A section-by-section book timeline.</strong> Dates identify the original moment; the sequence follows the reading experience.</p>
-            <p>Minimal quotations link back to the official book and original recordings. Sources last checked August 31, 2026.</p>
-          </footer>
         </article>
       </div>
     </main>
