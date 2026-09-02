@@ -376,7 +376,6 @@ export default function Home() {
             <section className="book-panel" aria-labelledby="book-label">
               <div className="panel-label">
                 <span id="book-label"><BookOpen aria-hidden="true" /> In the book</span>
-                <span>Passage {passageNumber} / {timelineEntries.length}</span>
               </div>
               <div className="book-copy">
                 <p className="book-context">{selected.bookSection}</p>
