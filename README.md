@@ -39,25 +39,6 @@ A full recording may also contain material omitted from the published text. Publ
 
 This repository contains the interface, source map, and brief quoted passages. It does not contain the full book or recording files. If you find a stronger source or a broken link, please open an issue with the event details and supporting evidence.
 
-## Local development
-
-Requires Node.js 22.13 or newer.
-
-```bash
-npm ci
-npm run dev
-```
-
-Open the local URL printed in the terminal.
-
-Build the production version with:
-
-```bash
-npm run build
-```
-
-The passage data and interface live in `app/page.tsx`. Global styles live in `app/globals.css`.
-
 ## Independent project
 
 This project is not affiliated with or endorsed by the Steve Jobs Archive, Apple Inc., or any linked publisher, institution, platform, or archive.
