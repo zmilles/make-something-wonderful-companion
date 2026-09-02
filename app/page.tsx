@@ -9,8 +9,10 @@ import {
   CirclePlay,
   FileText,
   Headphones,
+  Info,
   Video,
 } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 type Availability = 'full-video' | 'partial-video' | 'full-audio' | 'not-found';
 
@@ -271,6 +273,15 @@ export default function Home() {
         <button className="wordmark" onClick={() => stepTo(timelineEntries[0])} aria-label="Make Something Wonderful home">
           <span className="wordmark-title">Make Something Wonderful</span>
         </button>
+        <Popover>
+          <PopoverTrigger className="info-trigger" aria-label="About this website" title="About this website">
+            <Info aria-hidden="true" />
+          </PopoverTrigger>
+          <PopoverContent className="info-popover" align="end" sideOffset={18}>
+            <p>Compare 17 passages from <cite>Make Something Wonderful</cite> with the speeches and interviews they came from.</p>
+            <p>Use the numbered timeline or the arrow keys to move through the book. Public recordings are linked where available.</p>
+          </PopoverContent>
+        </Popover>
       </header>
 
       <div className="archive-layout">
