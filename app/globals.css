@@ -234,25 +234,22 @@ button, a { -webkit-tap-highlight-color: transparent; }
   top: 72px;
   align-self: start;
   height: calc(100vh - 72px);
-  padding: 61px 0 28px;
+  padding: 84px 0 28px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
-.timeline-heading { display: grid; gap: 4px; margin-bottom: 9px; }
+.timeline-heading { margin-bottom: 18px; }
 .timeline-heading p { margin: 0; font-size: 10px; font-weight: 650; letter-spacing: 0.11em; text-transform: uppercase; }
-.timeline-heading span { color: var(--muted-foreground); font-size: 9px; }
-.timeline-help { display: flex; align-items: center; gap: 3px; margin: 0 0 12px; color: var(--muted-foreground); font-size: 8px; }
-.timeline-help kbd { min-width: 16px; height: 16px; display: inline-grid; place-items: center; border: 1px solid var(--border); background: var(--paper); color: var(--foreground); font-family: var(--font-geist-mono); font-size: 8px; }
 .timeline-list { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; margin: 0; padding: 0; list-style: none; }
-.timeline-list::before { content: ''; position: absolute; left: 52px; top: 11px; bottom: 11px; width: 1px; background: var(--border); }
+.timeline-list::before { content: ''; position: absolute; left: 40px; top: 11px; bottom: 11px; width: 1px; background: var(--border); }
 .timeline-event {
   position: relative;
   z-index: 1;
   width: 100%;
   min-height: 25px;
   display: grid;
-  grid-template-columns: 42px 20px minmax(0, 1fr);
+  grid-template-columns: 30px 20px minmax(0, 1fr);
   align-items: center;
   gap: 0;
   padding: 0;
@@ -263,7 +260,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   text-align: left;
   cursor: pointer;
 }
-.timeline-part { padding-right: 7px; font-size: 8px; font-weight: 600; letter-spacing: 0.05em; text-align: right; text-transform: uppercase; white-space: nowrap; }
+.timeline-number { padding-right: 5px; font-family: var(--font-geist-mono); font-size: 7px; letter-spacing: 0.03em; text-align: right; }
 .timeline-node { width: 7px; height: 7px; justify-self: center; border: 1px solid #aaa79f; border-radius: 50%; background: var(--background); transition: width 160ms ease, height 160ms ease, background 160ms ease, border-color 160ms ease; }
 .timeline-copy { min-width: 0; display: grid; gap: 2px; opacity: 0; transform: translateX(-3px); transition: opacity 150ms ease, transform 150ms ease; pointer-events: none; }
 .timeline-copy strong { overflow: hidden; color: var(--foreground); font-size: 10px; font-weight: 560; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
@@ -281,14 +278,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .event-meta { min-width: 150px; padding-bottom: 3px; }
 .event-meta p { margin: 0 0 5px; color: var(--ink-soft); font-size: 11px; line-height: 1.35; }
 .event-meta p:first-child { color: var(--foreground); font-weight: 600; }
-.view-switcher { display: flex; justify-content: flex-end; gap: 2px; margin: -4px 0 12px; }
-.view-button { height: 27px; padding: 0 9px; border: 0; border-radius: 0; background: transparent; color: var(--muted-foreground); font: inherit; font-size: 9px; font-weight: 600; letter-spacing: 0.03em; cursor: pointer; }
-.view-button.is-active { background: var(--foreground); color: var(--background); }
 .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: 430px; border: 1px solid var(--foreground); }
-.mode-book .comparison-grid, .mode-source .comparison-grid { grid-template-columns: minmax(0, 1fr); }
-.mode-book .recording-panel { display: none; }
-.mode-source .book-panel { display: none; }
-.mode-source .recording-panel { border-left: 0; }
 .book-panel, .recording-panel { min-width: 0; display: flex; flex-direction: column; }
 .book-panel { background: var(--paper); padding: 22px 24px 20px; }
 .recording-panel { background: #171715; color: #f7f6f1; padding: 22px 24px 20px; border-left: 1px solid var(--foreground); }
@@ -349,13 +339,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .archive-layout { height: calc(100dvh - 72px); min-height: 0; overflow: hidden; }
   .timeline-nav { position: relative; top: 0; height: 100%; }
   .comparison { height: 100%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
-  .comparison-heading, .view-switcher { flex: 0 0 auto; }
+  .comparison-heading { flex: 0 0 auto; }
   .comparison-grid { flex: 1 1 auto; min-height: 0; }
   .book-panel, .recording-panel, .book-copy, .video-stage, .video-embed { min-height: 0; }
 }
 
 @media (min-width: 681px) and (min-height: 640px) and (max-height: 760px) {
-  .timeline-nav { padding-block: 34px 22px; }
+  .timeline-nav { padding-block: 52px 22px; }
   .comparison { padding-block: 34px 28px; }
   .comparison-heading { padding-bottom: 20px; }
   .comparison-heading h1 { margin-top: 11px; font-size: clamp(42px, 5vw, 64px); }
@@ -370,7 +360,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .archive-layout { grid-template-columns: 130px minmax(0, 1fr); gap: 20px; padding-inline: 16px; }
   .timeline-list::before { left: 30px; }
   .timeline-event { grid-template-columns: 20px 20px minmax(0, 1fr); }
-  .timeline-part { overflow: hidden; font-size: 7px; text-overflow: clip; }
+  .timeline-number { overflow: hidden; font-size: 7px; text-overflow: clip; }
   .comparison-heading { gap: 18px; }
   .comparison-heading h1 { font-size: clamp(39px, 6vw, 58px); }
   .event-meta { min-width: 120px; }
@@ -409,8 +399,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .mobile-timeline strong { overflow: hidden; font-size: 11px; font-weight: 580; text-overflow: ellipsis; white-space: nowrap; }
   .comparison-heading h1 { font-size: 49px; }
   .event-meta { padding-bottom: 0; }
-  .view-switcher { position: sticky; top: 130px; z-index: 10; justify-content: center; margin: 0 -18px 12px; padding: 8px 18px; border-block: 1px solid var(--border); background: color-mix(in srgb, var(--background) 94%, transparent); backdrop-filter: blur(12px); }
-  .view-button { flex: 1; }
   .comparison-grid { grid-template-columns: 1fr; min-height: 0; }
   .recording-panel { border-left: 0; border-top: 1px solid var(--foreground); }
   .book-panel, .recording-panel { padding: 18px; }

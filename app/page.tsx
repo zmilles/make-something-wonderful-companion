@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 
 type Availability = 'full-video' | 'partial-video' | 'full-audio' | 'not-found';
-type ViewMode = 'compare' | 'book' | 'source';
 
 type Entry = {
   id: string;
@@ -192,7 +191,6 @@ function AvailabilityIcon({ availability }: { availability: Availability }) {
 
 export default function Home() {
   const [selectedId, setSelectedId] = useState('stanford-2005');
-  const [viewMode, setViewMode] = useState<ViewMode>('compare');
   const [playing, setPlaying] = useState(false);
 
   const selected = entries.find((entry) => entry.id === selectedId) ?? timelineEntries[0];
@@ -201,6 +199,7 @@ export default function Home() {
   const next = timelineEntries[Math.min(timelineEntries.length - 1, selectedIndex + 1)];
   const hasPrevious = selectedIndex > 0;
   const hasNext = selectedIndex < timelineEntries.length - 1;
+  const passageNumber = String(selectedIndex + 1).padStart(2, '0');
 
   useEffect(() => {
     const requested = window.location.hash.replace('#', '');
@@ -267,7 +266,7 @@ export default function Home() {
   }
 
   return (
-    <main className={`site-frame mode-${viewMode}`}>
+    <main className="site-frame">
       <header className="masthead">
         <button className="wordmark" onClick={() => stepTo(timelineEntries[0])} aria-label="Make Something Wonderful home">
           <span className="wordmark-mark">MW</span>
@@ -289,18 +288,13 @@ export default function Home() {
       </header>
 
       <div className="archive-layout">
-        <nav className="timeline-nav" aria-label="Book timeline" aria-describedby="timeline-help" aria-keyshortcuts="ArrowUp ArrowDown Home End">
+        <nav className="timeline-nav" aria-label="Book timeline" aria-keyshortcuts="ArrowUp ArrowDown Home End">
           <div className="timeline-heading">
             <p>Book timeline</p>
-            <span>Opening → Part III</span>
           </div>
-          <p className="timeline-help" id="timeline-help">
-            <kbd>↑</kbd><kbd>↓</kbd> to move
-          </p>
           <ol className="timeline-list">
             {timelineEntries.map((entry, index) => {
               const active = entry.id === selected.id;
-              const beginsPart = index === 0 || timelineEntries[index - 1].part !== entry.part;
               return (
                 <li key={entry.id}>
                   <button
@@ -312,11 +306,11 @@ export default function Home() {
                     data-timeline-event
                     data-timeline-id={entry.id}
                   >
-                    <span className="timeline-part">{beginsPart ? entry.part : ''}</span>
+                    <span className="timeline-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
                     <span className="timeline-node" />
                     <span className="timeline-copy">
                       <strong>{entry.title}</strong>
-                      <small>{entry.year} · {availabilityLabel[entry.availability]}</small>
+                      <small>{entry.part} · {entry.year} · {availabilityLabel[entry.availability]}</small>
                     </span>
                   </button>
                 </li>
@@ -331,7 +325,7 @@ export default function Home() {
               <ArrowUp aria-hidden="true" />
             </button>
             <span>
-              <small>{selected.year} · {selectedIndex + 1} / {timelineEntries.length}</small>
+              <small>Passage {passageNumber} / {timelineEntries.length} · {selected.year}</small>
               <strong>{selected.title}</strong>
             </span>
             <button type="button" onClick={() => stepTo(next)} aria-label={`Next: ${next.title}`} disabled={!hasNext}>
@@ -352,19 +346,11 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="view-switcher" aria-label="Comparison view">
-            {(['book', 'compare', 'source'] as ViewMode[]).map((mode) => (
-              <button key={mode} type="button" onClick={() => setViewMode(mode)} className={viewMode === mode ? 'view-button is-active' : 'view-button'}>
-                {mode === 'source' ? 'Recording' : mode[0].toUpperCase() + mode.slice(1)}
-              </button>
-            ))}
-          </div>
-
           <div className="comparison-grid">
             <section className="book-panel" aria-labelledby="book-label">
               <div className="panel-label">
                 <span id="book-label"><BookOpen aria-hidden="true" /> In the book</span>
-                <span>{selected.year}</span>
+                <span>Passage {passageNumber} / {timelineEntries.length}</span>
               </div>
               <div className="book-copy">
                 <p className="book-context">{selected.bookSection}</p>
